@@ -4,7 +4,7 @@ import { catalog, type CatalogItem } from "@/components/site/cart/catalog";
 import { useCart } from "@/components/site/cart/CartContext";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/categories/")({
+export const Route = createFileRoute("/categories/$id")({
   head: ({ params }) => {
     const cat = catalog.find((c) => c.id === params.id);
     const title = cat ? `${cat.name} — AllFix` : "Category — AllFix";
