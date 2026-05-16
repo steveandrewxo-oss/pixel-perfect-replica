@@ -1,57 +1,79 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Header } from "@/components/site/Header";
-import { Hero } from "@/components/site/Hero";
-
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { catalog } from "@/components/site/cart/catalog";
 import { About } from "@/components/site/About";
 import { Reviews } from "@/components/site/Reviews";
-import { Booking } from "@/components/site/Booking";
-import { Contact } from "@/components/site/Contact";
-import { Footer } from "@/components/site/Footer";
-import { FloatingCTA } from "@/components/site/FloatingCTA";
-import { CleaningCatalog } from "@/components/site/CleaningCatalog";
-import { CartProvider } from "@/components/site/cart/CartContext";
-import { CartDrawer } from "@/components/site/CartDrawer";
-import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AllFix Maintenance Services — Plumber, Electrician, Solar & More | Islamabad" },
+      { title: "AllFix Maintenance Services — Cleaning & Home Care | Islamabad" },
       {
         name: "description",
         content:
-          "AllFix Maintenance Services Pvt Ltd: 24/7 plumber, electrician, solar, AC, CCTV, carpentry, painting & house maintenance in Bahria Town, Islamabad & Rawalpindi. Book online today.",
+          "Browse cleaning and maintenance services by category — sofa, carpet, mattress, water tanks, deep cleaning, solar and more. Bahria Town, Islamabad.",
       },
-      { property: "og:title", content: "AllFix Maintenance Services — All-in-One Home Repairs" },
+      { property: "og:title", content: "AllFix Maintenance Services" },
       {
         property: "og:description",
-        content:
-          "Trusted maintenance services across Islamabad & Rawalpindi. Plumbing, electrical, solar, AC, CCTV, carpentry & more — available 24/7.",
+        content: "Pick a category to see all services and order online.",
       },
-      { property: "og:type", content: "website" },
     ],
   }),
-  component: Index,
+  component: Home,
 });
 
-function Index() {
+function Home() {
   return (
-    <CartProvider>
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main>
-          <Hero />
-          <CleaningCatalog />
-          <About />
-          <Reviews />
-          <Booking />
-          <Contact />
-        </main>
-        <Footer />
-        <FloatingCTA />
-        <CartDrawer />
-        <Toaster richColors position="top-center" />
-      </div>
-    </CartProvider>
+    <div>
+      <section className="pt-6 pb-4 sm:pt-10 sm:pb-8">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
+            <span className="inline-block text-[11px] font-semibold tracking-[0.2em] uppercase text-brand mb-2">
+              Service Categories
+            </span>
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+              Pick a <span className="text-gradient-brand">category</span>
+            </h1>
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+              Tap any category to see all services inside.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            {catalog.map((c) => (
+              <Link
+                key={c.id}
+                to="/categories/$id"
+                params={{ id: c.id }}
+                className="card-hover group relative overflow-hidden rounded-2xl border border-border bg-card"
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-muted">
+                  <img
+                    src={c.image}
+                    alt={c.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="p-3 sm:p-4">
+                  <h3 className="text-sm sm:text-base font-semibold leading-snug line-clamp-2">
+                    {c.name}
+                  </h3>
+                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2 hidden sm:block">
+                    {c.blurb}
+                  </p>
+                  <div className="mt-2 text-xs font-semibold text-brand">
+                    {c.items.length} services →
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <About />
+      <Reviews />
+    </div>
   );
 }
