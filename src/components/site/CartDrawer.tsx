@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingCart, Plus, Minus, Trash2, MessageCircle } from "lucide-react";
+import { ShoppingCart, Plus, Minus, Trash2, MessageCircle, Loader2 } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,29 +11,55 @@ import { useCart } from "./cart/CartContext";
 export function CartDrawer() {
   const { items, count, total, originalTotal, isOpen, setOpen, inc, dec, remove, clear } = useCart();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
-  const [info, setInfo] = useState({ name: "", phone: "", address: "", date: "", notes: "" });
+  const [info, setInfo] = useState({ name: "", phone: "", email: "", address: "", date: "", notes: "" });
+  const [submitting, setSubmitting] = useState(false);
   const today = new Date().toISOString().split("T")[0];
   const savings = originalTotal - total;
 
-  const submit = () => {
+  const WHATSAPP_NUMBER = "923255333222";
+
+  const submit = async () => {
+    if (items.length === 0) return toast.error("Add at least one service");
     if (!info.name.trim() || info.name.trim().length < 2) return toast.error("Enter your name");
     if (!info.phone.trim() || info.phone.trim().length < 7) return toast.error("Enter a valid phone");
-    if (!info.address.trim()) return toast.error("Enter your address");
-    if (!info.date) return toast.error("Pick a preferred date");
+    if (info.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(info.email.trim())) {
+      return toast.error("Enter a valid email");
+    }
 
-    const lines = items.map((i) => `• ${i.name} x${i.qty} = Rs ${(i.price * i.qty).toLocaleString()}`).join("\n");
-    const msg =
-      `*New AllFix Booking*\n\n` +
-      `Name: ${info.name}\nPhone: ${info.phone}\nDate: ${info.date}\nAddress: ${info.address}\n` +
-      (info.notes ? `Notes: ${info.notes}\n` : "") +
-      `\n*Cart:*\n${lines}\n\n*Total: Rs ${total.toLocaleString()}*`;
+    setSubmitting(true);
+    try {
+      const serviceList = items
+        .map((i) => `• ${i.name} x${i.qty} — Rs ${(i.price * i.qty).toLocaleString()}`)
+        .join("\n");
 
-    window.open(`https://wa.me/923255333222?text=${encodeURIComponent(msg)}`, "_blank");
-    toast.success("Booking sent! We'll contact you shortly.");
-    clear();
-    setOpen(false);
-    setStep("cart");
-    setInfo({ name: "", phone: "", address: "", date: "", notes: "" });
+      const message =
+        `Hello, I want to confirm my booking.\n\n` +
+        `Name: ${info.name}\n` +
+        `Phone: ${info.phone}\n` +
+        (info.email.trim() ? `Email: ${info.email}\n` : "") +
+        (info.address.trim() ? `Address: ${info.address}\n` : "") +
+        (info.date ? `Preferred Date: ${info.date}\n` : "") +
+        `\nSelected Services:\n${serviceList}\n\n` +
+        `Total: Rs ${total.toLocaleString()}\n\n` +
+        `Additional Notes:\n${info.notes.trim() || "—"}`;
+
+      const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      const win = window.open(whatsappURL, "_blank", "noopener,noreferrer");
+      if (!win) {
+        toast.error("Unable to open WhatsApp. Please try again.");
+        return;
+      }
+
+      toast.success("Booking sent! We'll contact you shortly.");
+      clear();
+      setOpen(false);
+      setStep("cart");
+      setInfo({ name: "", phone: "", email: "", address: "", date: "", notes: "" });
+    } catch {
+      toast.error("Unable to open WhatsApp. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -122,6 +148,10 @@ export function CartDrawer() {
                 <Input id="cp" value={info.phone} onChange={(e) => setInfo({ ...info, phone: e.target.value })} placeholder="03XX XXXXXXX" />
               </div>
               <div className="space-y-1.5">
+                <Label htmlFor="ce">Email (optional)</Label>
+                <Input id="ce" type="email" value={info.email} onChange={(e) => setInfo({ ...info, email: e.target.value })} placeholder="you@example.com" />
+              </div>
+              <div className="space-y-1.5">
                 <Label htmlFor="cd">Preferred Date</Label>
                 <Input id="cd" type="date" min={today} value={info.date} onChange={(e) => setInfo({ ...info, date: e.target.value })} />
               </div>
@@ -141,8 +171,12 @@ export function CartDrawer() {
               </div>
             </div>
             <div className="border-t p-5 space-y-2 bg-background">
-              <Button onClick={submit} className="w-full h-12 rounded-full bg-brand hover:bg-brand text-brand-foreground font-semibold shadow-glow">
-                <MessageCircle className="mr-2 h-5 w-5" /> Confirm via WhatsApp
+              <Button onClick={submit} disabled={submitting} className="w-full h-12 rounded-full bg-brand hover:bg-brand text-brand-foreground font-semibold shadow-glow">
+                {submitting ? (
+                  <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Opening WhatsApp…</>
+                ) : (
+                  <><MessageCircle className="mr-2 h-5 w-5" /> Confirm via WhatsApp</>
+                )}
               </Button>
               <button onClick={() => setStep("cart")} className="w-full text-sm text-muted-foreground hover:text-foreground transition">
                 ← Back to cart
