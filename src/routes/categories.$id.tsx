@@ -57,7 +57,7 @@ function CategoryPage() {
 
       <div className="container mx-auto px-4 mt-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {cat.items.map((item) => (
+          {cat.items.map((item: CatalogItem) => (
             <ServiceCard key={item.id} item={item} categoryName={cat.name} image={cat.image} />
           ))}
         </div>
