@@ -8,6 +8,7 @@ export type CatalogItem = {
   unit?: string;
   includes?: string[];
   excludes?: string[];
+  image?: string;
 };
 
 export type Category = {
@@ -28,6 +29,12 @@ import cementTankImg from "@/assets/catalog/cement-tank.jpg";
 import deepImg from "@/assets/catalog/deep.jpg";
 import solarImg from "@/assets/catalog/solar.jpg";
 import acImg from "@/assets/services/ac.jpg";
+import acGeneralImg from "@/assets/services/ac/general.jpg";
+import acInstallImg from "@/assets/services/ac/install.jpg";
+import acRepairImg from "@/assets/services/ac/repair.jpg";
+import acMountDismountImg from "@/assets/services/ac/mount-dismount.jpg";
+import acDismountImg from "@/assets/services/ac/dismount.jpg";
+import acMdGeneralImg from "@/assets/services/ac/md-general.jpg";
 
 const r = (min = 4.3, max = 4.9) =>
   Math.round((min + Math.random() * (max - min)) * 10) / 10;
