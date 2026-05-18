@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Minus, Plus, ShoppingCart, Star } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Check, ChevronDown, Minus, Plus, ShoppingCart, Star, X } from "lucide-react";
 import { catalog, type CatalogItem } from "@/components/site/cart/catalog";
 import { useCart } from "@/components/site/cart/CartContext";
 import { Button } from "@/components/ui/button";
@@ -70,6 +71,8 @@ function ServiceCard({ item, categoryName, image }: { item: CatalogItem; categor
   const { items, add, inc, dec } = useCart();
   const line = items.find((i) => i.id === item.id);
   const off = Math.round(((item.original - item.price) / item.original) * 100);
+  const [showTerms, setShowTerms] = useState(false);
+  const hasTerms = (item.includes && item.includes.length > 0) || (item.excludes && item.excludes.length > 0);
 
   return (
     <div className="card-hover group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
@@ -113,6 +116,49 @@ function ServiceCard({ item, categoryName, image }: { item: CatalogItem; categor
             </Button>
           )}
         </div>
+        {hasTerms && (
+          <div className="mt-3 border-t border-border pt-3">
+            <button
+              type="button"
+              onClick={() => setShowTerms((v) => !v)}
+              aria-expanded={showTerms}
+              className="flex w-full items-center justify-between text-xs font-semibold text-muted-foreground hover:text-foreground transition"
+            >
+              <span>Terms &amp; Conditions</span>
+              <ChevronDown className={`h-4 w-4 transition-transform ${showTerms ? "rotate-180" : ""}`} />
+            </button>
+            {showTerms && (
+              <div className="mt-3 space-y-3 animate-fade-in">
+                {item.includes && item.includes.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-brand mb-1.5">Includes</p>
+                    <ul className="space-y-1">
+                      {item.includes.map((line) => (
+                        <li key={line} className="flex items-start gap-2 text-xs text-foreground/90">
+                          <Check className="h-3.5 w-3.5 mt-0.5 shrink-0 text-green-600" />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {item.excludes && item.excludes.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-destructive mb-1.5">Does Not Include</p>
+                    <ul className="space-y-1">
+                      {item.excludes.map((line) => (
+                        <li key={line} className="flex items-start gap-2 text-xs text-muted-foreground">
+                          <X className="h-3.5 w-3.5 mt-0.5 shrink-0 text-destructive" />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
