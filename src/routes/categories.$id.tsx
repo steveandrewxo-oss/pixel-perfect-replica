@@ -59,7 +59,7 @@ function CategoryPage() {
       <div className="container mx-auto px-4 mt-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {cat.items.map((item: CatalogItem) => (
-            <ServiceCard key={item.id} item={item} categoryName={cat.name} image={cat.image} />
+            <ServiceCard key={item.id} item={item} categoryName={cat.name} image={item.image ?? cat.image} />
           ))}
         </div>
       </div>
@@ -76,8 +76,8 @@ function ServiceCard({ item, categoryName, image }: { item: CatalogItem; categor
 
   return (
     <div className="card-hover group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="relative h-36 overflow-hidden bg-muted">
-        <img src={image} alt={item.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+        <img src={image} alt={item.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110" />
         {off > 0 && (
           <span className="absolute top-3 right-3 inline-flex items-center rounded-full bg-brand text-brand-foreground text-[11px] font-bold px-2.5 py-1 shadow-glow">
             {off}% OFF
