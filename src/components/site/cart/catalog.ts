@@ -152,6 +152,7 @@ export const catalog: Category[] = [
         name: "AC General Service",
         description: "Per AC (1 to 2.5 tons)",
         original: 3300, price: 2500, rating: 4.3,
+        image: acGeneralImg,
         includes: [
           "Dismounting of indoor unit",
           "Cleaning of indoor unit with pressure washer",
@@ -172,6 +173,7 @@ export const catalog: Category[] = [
         name: "AC Installation",
         description: "Installation with 10 Feet pipe (1 to 2.5 tons)",
         original: 5100, price: 3200, rating: 4.4,
+        image: acInstallImg,
         includes: [
           "Mounting of indoor unit",
           "Mounting of outdoor unit",
@@ -191,6 +193,7 @@ export const catalog: Category[] = [
         name: "AC Repairing",
         description: "Visit and Inspection Charges",
         original: 1000, price: 800, rating: 4.3,
+        image: acRepairImg,
         includes: [
           "AC inspection",
           "AC gas check",
@@ -208,6 +211,7 @@ export const catalog: Category[] = [
         name: "AC Mounting and Dismounting",
         description: "Per AC (1 to 2.5 tons)",
         original: 6400, price: 4000, rating: 4.6,
+        image: acMountDismountImg,
         includes: [
           "Dismount indoor & outdoor unit from one place",
           "Mount indoor & outdoor unit to second place",
@@ -227,6 +231,7 @@ export const catalog: Category[] = [
         name: "AC Dismounting",
         description: "Per AC (1 to 2.5 tons)",
         original: 1500, price: 1200, rating: 4.8,
+        image: acDismountImg,
         includes: [
           "Dismounting of indoor unit",
           "Dismounting of outdoor unit",
@@ -244,6 +249,7 @@ export const catalog: Category[] = [
         name: "AC Mounting and Dismounting + AC General Service",
         description: "Per AC (1 to 2.5 tons)",
         original: 8500, price: 5500, rating: 4.9,
+        image: acMdGeneralImg,
         includes: [
           "Dismount indoor & outdoor unit from one location",
           "Mount indoor & outdoor unit to second location",
