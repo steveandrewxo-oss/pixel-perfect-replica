@@ -6,6 +6,8 @@ export type CatalogItem = {
   price: number;
   rating: number;
   unit?: string;
+  includes?: string[];
+  excludes?: string[];
 };
 
 export type Category = {
@@ -25,6 +27,7 @@ import plasticTankImg from "@/assets/catalog/plastic-tank.jpg";
 import cementTankImg from "@/assets/catalog/cement-tank.jpg";
 import deepImg from "@/assets/catalog/deep.jpg";
 import solarImg from "@/assets/catalog/solar.jpg";
+import acImg from "@/assets/services/ac.jpg";
 
 const r = (min = 4.3, max = 4.9) =>
   Math.round((min + Math.random() * (max - min)) * 10) / 10;
