@@ -57,11 +57,41 @@ function CategoryPage() {
       </div>
 
       <div className="container mx-auto px-4 mt-8">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {cat.items.map((item: CatalogItem) => (
-            <ServiceCard key={item.id} item={item} categoryName={cat.name} image={item.image ?? cat.image} />
-          ))}
-        </div>
+        {(() => {
+          const groups = new Map<string, CatalogItem[]>();
+          for (const item of cat.items) {
+            const key = item.subcategory ?? "";
+            if (!groups.has(key)) groups.set(key, []);
+            groups.get(key)!.push(item);
+          }
+          const entries = Array.from(groups.entries());
+          const hasGroups = entries.some(([k]) => k !== "");
+          if (!hasGroups) {
+            return (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                {cat.items.map((item) => (
+                  <ServiceCard key={item.id} item={item} categoryName={cat.name} image={item.image ?? cat.image} />
+                ))}
+              </div>
+            );
+          }
+          return (
+            <div className="space-y-10">
+              {entries.map(([group, items]) => (
+                <section key={group || "other"}>
+                  {group && (
+                    <h2 className="text-lg sm:text-2xl font-bold mb-4 border-l-4 border-brand pl-3">{group}</h2>
+                  )}
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    {items.map((item) => (
+                      <ServiceCard key={item.id} item={item} categoryName={cat.name} image={item.image ?? cat.image} />
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
