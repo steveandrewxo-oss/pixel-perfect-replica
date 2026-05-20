@@ -69,7 +69,7 @@ function CategoryPage() {
           if (!hasGroups) {
             return (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                {cat.items.map((item) => (
+                {cat.items.map((item: CatalogItem) => (
                   <ServiceCard key={item.id} item={item} categoryName={cat.name} image={item.image ?? cat.image} />
                 ))}
               </div>
@@ -83,7 +83,7 @@ function CategoryPage() {
                     <h2 className="text-lg sm:text-2xl font-bold mb-4 border-l-4 border-brand pl-3">{group}</h2>
                   )}
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                    {items.map((item) => (
+                    {items.map((item: CatalogItem) => (
                       <ServiceCard key={item.id} item={item} categoryName={cat.name} image={item.image ?? cat.image} />
                     ))}
                   </div>
