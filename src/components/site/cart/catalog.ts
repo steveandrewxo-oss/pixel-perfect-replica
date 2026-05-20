@@ -18,6 +18,7 @@ export type Category = {
   blurb: string;
   image: string;
   items: CatalogItem[];
+  parent?: string;
 };
 
 import sofaImg from "@/assets/catalog/sofa.jpg";
@@ -36,6 +37,15 @@ import acRepairImg from "@/assets/services/ac/repair.jpg";
 import acMountDismountImg from "@/assets/services/ac/mount-dismount.jpg";
 import acDismountImg from "@/assets/services/ac/dismount.jpg";
 import acMdGeneralImg from "@/assets/services/ac/md-general.jpg";
+import homeServicesImg from "@/assets/services/home/home-services.jpg";
+import plumberImg from "@/assets/services/home/plumber.jpg";
+import electricianImg from "@/assets/services/home/electrician.jpg";
+import handymanImg from "@/assets/services/home/handyman.jpg";
+import carpenterImg from "@/assets/services/home/carpenter.jpg";
+import painterImg from "@/assets/services/home/painter.jpg";
+import appliancesImg from "@/assets/services/home/appliances.jpg";
+import geyserImg from "@/assets/services/home/geyser.jpg";
+import pestImg from "@/assets/services/home/pest.jpg";
 
 const r = (min = 4.3, max = 4.9) =>
   Math.round((min + Math.random() * (max - min)) * 10) / 10;
